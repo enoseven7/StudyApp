@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -7,6 +8,7 @@ import '../models/topic.dart';
 import '../models/note.dart';
 
 import '../pages/topics_page.dart';
+import '../pages/notes_page.dart';
 
 import '../services/subject_services.dart';
 
@@ -34,6 +36,14 @@ class StudyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Study App',
+      localizationsDelegates: const [
+        // AppLocalizations.delegate,
+        FlutterQuillLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // English
+        // Add other supported locales here
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.tealAccent,
@@ -129,85 +139,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-class NotesPage extends StatefulWidget {
-  const NotesPage({super.key});
-
-  @override
-  State<NotesPage> createState() => _NotesPageState();
-}
-
-class _NotesPageState extends State<NotesPage> {
-  List<Subject> subjects = [];
-
-  void _addSubject() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        String subjectName = '';
-
-        return AlertDialog(
-          title: const Text('Add Subject'),
-          content: TextField(
-            onChanged: (value) {
-              subjectName = value;
-            },
-            decoration: const InputDecoration(hintText: 'Subject Name'),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                if (subjectName.trim().isEmpty) return;
-
-                await subjectService.addSubject(subjectName.trim());
-                if(mounted) Navigator.pop(context);
-              },
-              child: const Text('Add'),
-            ),
-          ],
-        );
-      },
-      );
-  }
-
-  void _openSubject(Subject subject) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => TopicsPage(subject: subject),
-      ),
-    );
-  }
-  @override
-  
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addSubject,
-        child: const Icon(Icons.add),
-      ),
-      body: subjects.isEmpty
-          ? const Center(child: Text("No subjects yet. Add one!"))
-          : ListView.builder(
-              itemCount: subjects.length,
-              itemBuilder: (context, index) {
-                final subject = subjects[index];
-
-                return ListTile(
-                  title: Text(subject.name),
-                  onTap: () => _openSubject(subject),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                );
-              }
-          )
-    );
-  }
-}
 
 class FlashcardPage extends StatelessWidget {
   const FlashcardPage({super.key});

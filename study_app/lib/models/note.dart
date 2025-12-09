@@ -7,5 +7,7 @@ class Note {
   Id id = Isar.autoIncrement;
 
   late int topicId;   // Link to topic
+
+  @Index(caseSensitive: false)
   late String content;
 }

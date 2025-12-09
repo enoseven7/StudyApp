@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:study_app/services/note_service.dart';
 import '../models/note.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+
 
 class NoteEditorPage extends StatefulWidget {
   final Note note;
@@ -12,16 +17,23 @@ class NoteEditorPage extends StatefulWidget {
 }
 
 class _NoteEditorPageState extends State<NoteEditorPage> {
-  late TextEditingController _controller;
+  late QuillController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.note.content);
+    final doc = widget.note.content.isEmpty
+        ? Document()
+        : Document.fromJson(jsonDecode(widget.note.content));
+    _controller = QuillController(
+      document: doc,
+      selection: const TextSelection.collapsed(offset: 0),
+    );
   }
 
   Future<void> _save() async {
-    widget.note.content = _controller.text;
+    widget.note.content = jsonEncode(_controller.document.toDelta().toJson());
+    await noteService.updateNote(widget.note);
     await widget.onSave(widget.note);
     if (mounted) {
       Navigator.pop(context);
@@ -48,13 +60,22 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: TextField(
-          controller: _controller,
-          maxLines: null,
-          decoration: const InputDecoration(
-            hintText: "Write your note here...",
-            border: InputBorder.none,
-          ),
+        child: Column(
+          children: [
+            QuillSimpleToolbar(controller: _controller),
+            const SizedBox(height: 10),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: QuillEditor.basic(
+                  controller: _controller,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

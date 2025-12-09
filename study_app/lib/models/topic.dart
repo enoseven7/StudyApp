@@ -7,5 +7,7 @@ class Topic {
   Id id = Isar.autoIncrement;
 
   late int subjectId; // Link to subject
+
+  @Index(caseSensitive: false)
   late String name;
 }
