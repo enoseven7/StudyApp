@@ -46,7 +46,8 @@ class _TopicsPageState extends State<TopicsPage> {
 
                 await topicService.addTopic(widget.subject.id, name.trim());
                 await _loadTopics();
-                if (mounted) Navigator.pop(context);
+                if (!context.mounted) return;
+                Navigator.pop(context);
               },
             ),
           ],
@@ -189,11 +190,15 @@ class _TopicsPageState extends State<TopicsPage> {
                     await topicService.deleteTopic(topic.id);
                     await _loadTopics();
                   },
-                  child: ListTile(
-                    title: Text(topic.name),
-                    trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () => _openTopic(topic),
-                    onLongPress: () => _showTopicMenu(topic),
+                  child: Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.folder_open),
+                      title: Text(topic.name),
+                      textColor: Colors.white,
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => _openTopic(topic),
+                      onLongPress: () => _showTopicMenu(topic),
+                    ),
                   ),
                 );
               },

@@ -111,7 +111,7 @@ class _NotesListPageState extends State<NotesListPage> {
       if (preview.isEmpty) return "";
       if (preview.length <= 50) return preview;
 
-      return preview.substring(0, 50) + "…";
+      return "${preview.substring(0, 50)}...";
     } catch (_) {
       return "";
     }
@@ -160,3 +160,4 @@ class _NotesListPageState extends State<NotesListPage> {
     );
   }
 }
+

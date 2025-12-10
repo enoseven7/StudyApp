@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'note.dart';
+part of 'flashcard_deck.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,17 +9,17 @@ part of 'note.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetNoteCollection on Isar {
-  IsarCollection<Note> get notes => this.collection();
+extension GetFlashcardDeckCollection on Isar {
+  IsarCollection<FlashcardDeck> get flashcardDecks => this.collection();
 }
 
-const NoteSchema = CollectionSchema(
-  name: r'Note',
-  id: 6284318083599466921,
+const FlashcardDeckSchema = CollectionSchema(
+  name: r'FlashcardDeck',
+  id: 2663524640301590320,
   properties: {
-    r'content': PropertySchema(
+    r'name': PropertySchema(
       id: 0,
-      name: r'content',
+      name: r'name',
       type: IsarType.string,
     ),
     r'topicId': PropertySchema(
@@ -28,20 +28,20 @@ const NoteSchema = CollectionSchema(
       type: IsarType.long,
     )
   },
-  estimateSize: _noteEstimateSize,
-  serialize: _noteSerialize,
-  deserialize: _noteDeserialize,
-  deserializeProp: _noteDeserializeProp,
+  estimateSize: _flashcardDeckEstimateSize,
+  serialize: _flashcardDeckSerialize,
+  deserialize: _flashcardDeckDeserialize,
+  deserializeProp: _flashcardDeckDeserializeProp,
   idName: r'id',
   indexes: {
-    r'content': IndexSchema(
-      id: 6193209363630369380,
-      name: r'content',
+    r'name': IndexSchema(
+      id: 879695947855722453,
+      name: r'name',
       unique: false,
       replace: false,
       properties: [
         IndexPropertySchema(
-          name: r'content',
+          name: r'name',
           type: IndexType.hash,
           caseSensitive: false,
         )
@@ -50,46 +50,46 @@ const NoteSchema = CollectionSchema(
   },
   links: {},
   embeddedSchemas: {},
-  getId: _noteGetId,
-  getLinks: _noteGetLinks,
-  attach: _noteAttach,
+  getId: _flashcardDeckGetId,
+  getLinks: _flashcardDeckGetLinks,
+  attach: _flashcardDeckAttach,
   version: '3.1.0+1',
 );
 
-int _noteEstimateSize(
-  Note object,
+int _flashcardDeckEstimateSize(
+  FlashcardDeck object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.content.length * 3;
+  bytesCount += 3 + object.name.length * 3;
   return bytesCount;
 }
 
-void _noteSerialize(
-  Note object,
+void _flashcardDeckSerialize(
+  FlashcardDeck object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.content);
+  writer.writeString(offsets[0], object.name);
   writer.writeLong(offsets[1], object.topicId);
 }
 
-Note _noteDeserialize(
+FlashcardDeck _flashcardDeckDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Note();
-  object.content = reader.readString(offsets[0]);
+  final object = FlashcardDeck();
   object.id = id;
+  object.name = reader.readString(offsets[0]);
   object.topicId = reader.readLong(offsets[1]);
   return object;
 }
 
-P _noteDeserializeProp<P>(
+P _flashcardDeckDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -105,28 +105,32 @@ P _noteDeserializeProp<P>(
   }
 }
 
-Id _noteGetId(Note object) {
+Id _flashcardDeckGetId(FlashcardDeck object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _noteGetLinks(Note object) {
+List<IsarLinkBase<dynamic>> _flashcardDeckGetLinks(FlashcardDeck object) {
   return [];
 }
 
-void _noteAttach(IsarCollection<dynamic> col, Id id, Note object) {
+void _flashcardDeckAttach(
+    IsarCollection<dynamic> col, Id id, FlashcardDeck object) {
   object.id = id;
 }
 
-extension NoteQueryWhereSort on QueryBuilder<Note, Note, QWhere> {
-  QueryBuilder<Note, Note, QAfterWhere> anyId() {
+extension FlashcardDeckQueryWhereSort
+    on QueryBuilder<FlashcardDeck, FlashcardDeck, QWhere> {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
-  QueryBuilder<Note, Note, QAfterWhereClause> idEqualTo(Id id) {
+extension FlashcardDeckQueryWhere
+    on QueryBuilder<FlashcardDeck, FlashcardDeck, QWhereClause> {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterWhereClause> idEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -135,7 +139,8 @@ extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterWhereClause> idNotEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -157,7 +162,8 @@ extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterWhereClause> idGreaterThan(
+      Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -166,7 +172,8 @@ extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterWhereClause> idLessThan(
+      Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -175,7 +182,7 @@ extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterWhereClause> idBetween(
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -191,44 +198,45 @@ extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterWhereClause> contentEqualTo(String content) {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterWhereClause> nameEqualTo(
+      String name) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'content',
-        value: [content],
+        indexName: r'name',
+        value: [name],
       ));
     });
   }
 
-  QueryBuilder<Note, Note, QAfterWhereClause> contentNotEqualTo(
-      String content) {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterWhereClause> nameNotEqualTo(
+      String name) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'content',
+              indexName: r'name',
               lower: [],
-              upper: [content],
+              upper: [name],
               includeUpper: false,
             ))
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'content',
-              lower: [content],
+              indexName: r'name',
+              lower: [name],
               includeLower: false,
               upper: [],
             ));
       } else {
         return query
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'content',
-              lower: [content],
+              indexName: r'name',
+              lower: [name],
               includeLower: false,
               upper: [],
             ))
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'content',
+              indexName: r'name',
               lower: [],
-              upper: [content],
+              upper: [name],
               includeUpper: false,
             ));
       }
@@ -236,136 +244,10 @@ extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
   }
 }
 
-extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
-  QueryBuilder<Note, Note, QAfterFilterCondition> contentEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'content',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterFilterCondition> contentGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'content',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterFilterCondition> contentLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'content',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterFilterCondition> contentBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'content',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterFilterCondition> contentStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'content',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterFilterCondition> contentEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'content',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterFilterCondition> contentContains(String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'content',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterFilterCondition> contentMatches(String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'content',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterFilterCondition> contentIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'content',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterFilterCondition> contentIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'content',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterFilterCondition> idEqualTo(Id value) {
+extension FlashcardDeckQueryFilter
+    on QueryBuilder<FlashcardDeck, FlashcardDeck, QFilterCondition> {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition> idEqualTo(
+      Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -374,7 +256,8 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      idGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -387,7 +270,7 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterFilterCondition> idLessThan(
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition> idLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -400,7 +283,7 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterFilterCondition> idBetween(
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition> idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -417,7 +300,143 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterFilterCondition> topicIdEqualTo(int value) {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition> nameEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      nameGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      nameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition> nameBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'name',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      nameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      nameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      nameContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'name',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition> nameMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'name',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      nameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'name',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      nameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'name',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      topicIdEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'topicId',
@@ -426,7 +445,8 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterFilterCondition> topicIdGreaterThan(
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      topicIdGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -439,7 +459,8 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterFilterCondition> topicIdLessThan(
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      topicIdLessThan(
     int value, {
     bool include = false,
   }) {
@@ -452,7 +473,8 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Note, Note, QAfterFilterCondition> topicIdBetween(
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterFilterCondition>
+      topicIdBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -470,103 +492,109 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
   }
 }
 
-extension NoteQueryObject on QueryBuilder<Note, Note, QFilterCondition> {}
+extension FlashcardDeckQueryObject
+    on QueryBuilder<FlashcardDeck, FlashcardDeck, QFilterCondition> {}
 
-extension NoteQueryLinks on QueryBuilder<Note, Note, QFilterCondition> {}
+extension FlashcardDeckQueryLinks
+    on QueryBuilder<FlashcardDeck, FlashcardDeck, QFilterCondition> {}
 
-extension NoteQuerySortBy on QueryBuilder<Note, Note, QSortBy> {
-  QueryBuilder<Note, Note, QAfterSortBy> sortByContent() {
+extension FlashcardDeckQuerySortBy
+    on QueryBuilder<FlashcardDeck, FlashcardDeck, QSortBy> {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'content', Sort.asc);
+      return query.addSortBy(r'name', Sort.asc);
     });
   }
 
-  QueryBuilder<Note, Note, QAfterSortBy> sortByContentDesc() {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'content', Sort.desc);
+      return query.addSortBy(r'name', Sort.desc);
     });
   }
 
-  QueryBuilder<Note, Note, QAfterSortBy> sortByTopicId() {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterSortBy> sortByTopicId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'topicId', Sort.asc);
     });
   }
 
-  QueryBuilder<Note, Note, QAfterSortBy> sortByTopicIdDesc() {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterSortBy> sortByTopicIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'topicId', Sort.desc);
     });
   }
 }
 
-extension NoteQuerySortThenBy on QueryBuilder<Note, Note, QSortThenBy> {
-  QueryBuilder<Note, Note, QAfterSortBy> thenByContent() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'content', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterSortBy> thenByContentDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'content', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Note, Note, QAfterSortBy> thenById() {
+extension FlashcardDeckQuerySortThenBy
+    on QueryBuilder<FlashcardDeck, FlashcardDeck, QSortThenBy> {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<Note, Note, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<Note, Note, QAfterSortBy> thenByTopicId() {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterSortBy> thenByName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterSortBy> thenByNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterSortBy> thenByTopicId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'topicId', Sort.asc);
     });
   }
 
-  QueryBuilder<Note, Note, QAfterSortBy> thenByTopicIdDesc() {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QAfterSortBy> thenByTopicIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'topicId', Sort.desc);
     });
   }
 }
 
-extension NoteQueryWhereDistinct on QueryBuilder<Note, Note, QDistinct> {
-  QueryBuilder<Note, Note, QDistinct> distinctByContent(
+extension FlashcardDeckQueryWhereDistinct
+    on QueryBuilder<FlashcardDeck, FlashcardDeck, QDistinct> {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'content', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Note, Note, QDistinct> distinctByTopicId() {
+  QueryBuilder<FlashcardDeck, FlashcardDeck, QDistinct> distinctByTopicId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'topicId');
     });
   }
 }
 
-extension NoteQueryProperty on QueryBuilder<Note, Note, QQueryProperty> {
-  QueryBuilder<Note, int, QQueryOperations> idProperty() {
+extension FlashcardDeckQueryProperty
+    on QueryBuilder<FlashcardDeck, FlashcardDeck, QQueryProperty> {
+  QueryBuilder<FlashcardDeck, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<Note, String, QQueryOperations> contentProperty() {
+  QueryBuilder<FlashcardDeck, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'content');
+      return query.addPropertyName(r'name');
     });
   }
 
-  QueryBuilder<Note, int, QQueryOperations> topicIdProperty() {
+  QueryBuilder<FlashcardDeck, int, QQueryOperations> topicIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'topicId');
     });

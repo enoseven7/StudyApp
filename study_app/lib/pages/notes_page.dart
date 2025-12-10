@@ -49,7 +49,7 @@ class _NotesPageState extends State<NotesPage> {
                 await subjectService.addSubject(name.trim());
                 await _loadSubjects();
 
-                if (!mounted) return;
+                if (!context.mounted) return;
                 Navigator.pop(context);
               },
             ),
@@ -189,12 +189,16 @@ class _NotesPageState extends State<NotesPage> {
                     await subjectService.deleteSubject(subject.id);
                     await _loadSubjects();
                   },
-                  child: ListTile(
-                    title: Text(subject.name),
-                    trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () => _openSubject(subject),
-                    onLongPress: () => _showSubjectMenu(subject),
-                  ),
+                  child: Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.book_outlined),
+                      title: Text(subject.name),
+                      textColor: Colors.white,
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => _openSubject(subject),
+                      onLongPress: () => _showSubjectMenu(subject),
+                    ),
+                  )
                 );
               },
             ),
