@@ -1,7 +1,5 @@
 
 import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:isar/isar.dart';
 import 'package:llama_cpp_dart/llama_cpp_dart.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -152,22 +150,55 @@ Follow-ups: 2-3 suggested questions.
 final teachService = TeachService();
 
 class LlamaRuntime {
-  LlamaModel? _model;
-  LlamaContext? _ctx;
+  Llama? _llama;
   String? _loadedPath;
+  String? _libPath;
+
+  String? _findLibrary() {
+    if (_libPath != null) return _libPath;
+    final cwd = Directory.current.path;
+    final exeDir = p.dirname(Platform.resolvedExecutable);
+    final candidates = [
+      p.join(cwd, 'llama.dll'),
+      p.join(cwd, 'bin', 'llama.dll'),
+      p.join(exeDir, 'llama.dll'),
+      p.join(exeDir, 'bin', 'llama.dll'),
+    ];
+    for (final candidate in candidates) {
+      if (File(candidate).existsSync()) {
+        _libPath = candidate;
+        return _libPath;
+      }
+    }
+    return null;
+  }
 
   Future<void> load(String path) async {
-    if (_loadedPath == path && _ctx != null) return;
-    _ctx?.dispose();
-    _model = await LlamaModel.create(path: path);
-    _ctx = await LlamaContext.create(model: _model!, params: const LlamaContextParams(nCtx: 2048));
+    if (_loadedPath == path && _llama != null) return;
+    _llama?.dispose();
+    final libPath = _findLibrary();
+    if (libPath == null) {
+      throw Exception("llama.dll not found in current directory or bin/ subfolder");
+    }
+    Llama.libraryPath = libPath;
+    _llama = Llama(path, null, ContextParams()
+      ..nCtx = 2048
+      ..nPredict = 256);
     _loadedPath = path;
   }
 
   Future<String> generate(String prompt) async {
-    if (_ctx == null) throw Exception("Model not loaded");
-    final pipeline = LlamaPipeline(context: _ctx!, prompt: prompt, params: const LlamaSamplingParams(maxLength: 256));
-    final tokens = await pipeline.execute();
-    return tokens.join();
+    final llama = _llama;
+    if (llama == null) throw Exception("Model not loaded");
+    try {
+      llama.setPrompt(prompt);
+      final buffer = StringBuffer();
+      await for (final chunk in llama.generateText()) {
+        buffer.write(chunk);
+      }
+      return buffer.toString();
+    } catch (e) {
+      rethrow;
+    }
   }
 }
