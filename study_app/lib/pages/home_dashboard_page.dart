@@ -104,40 +104,22 @@ class _HomeDashboardPageState extends State<HomeDashboardPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Welcome back", style: textTheme.titleMedium),
-                  const SizedBox(height: 4),
-                  Text(
-                    "Track your study at a glance.",
-                    style: textTheme.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
-                  ),
-                ],
-              ),
-              IconButton(
-                tooltip: "Refresh",
-                icon: const Icon(Icons.refresh),
-                onPressed: _loadStats,
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
+          _buildHero(colors, textTheme),
+          const SizedBox(height: 20),
           loading
-              ? const Center(child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 24),
-                child: CircularProgressIndicator(),
-              ))
+              ? const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 24),
+                    child: CircularProgressIndicator(),
+                  ),
+                )
               : GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  crossAxisCount: MediaQuery.of(context).size.width > 900 ? 3 : 2,
+                  crossAxisCount: MediaQuery.of(context).size.width > 1024 ? 4 : 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 2.8,
+                  childAspectRatio: 3,
                   children: [
                     _statCard("Subjects", subjects, Icons.book_outlined, colors.primary),
                     _statCard("Topics", topics, Icons.folder_open, colors.secondary),
@@ -149,10 +131,6 @@ class _HomeDashboardPageState extends State<HomeDashboardPage> {
                   ],
                 ),
           const SizedBox(height: 20),
-          Text("Recommendations", style: textTheme.titleMedium),
-          const SizedBox(height: 8),
-          _buildTrendCard(colors, textTheme),
-          const SizedBox(height: 12),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(12),
@@ -196,6 +174,110 @@ class _HomeDashboardPageState extends State<HomeDashboardPage> {
     );
   }
 
+  Widget _buildHero(ColorScheme colors, TextTheme textTheme) {
+    final hasData = _trendData.isNotEmpty;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colors.outline),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            colors.surfaceContainer.withOpacity(0.9),
+            colors.surfaceContainerHigh.withOpacity(0.9),
+          ],
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Study pulse", style: textTheme.titleLarge),
+                  const SizedBox(height: 4),
+                  Text(
+                    hasData
+                        ? "Productivity over recent sessions"
+                        : "No sessions yet — your first activity will appear here.",
+                    style: textTheme.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              IconButton(
+                tooltip: "Refresh",
+                icon: const Icon(Icons.refresh),
+                onPressed: _loadStats,
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 220,
+            child: hasData
+                ? _buildTrendCard(colors, textTheme, showFrame: false)
+                : _emptySparkline(colors, textTheme),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _quickAction(Icons.add_chart_outlined, "New quiz"),
+              _quickAction(Icons.note_add_outlined, "New note"),
+              _quickAction(Icons.library_add_outlined, "New deck"),
+              _quickAction(Icons.bookmark_add_outlined, "New subject"),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _quickAction(IconData icon, String label) {
+    final colors = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: colors.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: colors.outline),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 18, color: colors.primary),
+          const SizedBox(width: 8),
+          Text(label, style: textTheme.bodyMedium),
+        ],
+      ),
+    );
+  }
+
+  Widget _emptySparkline(ColorScheme colors, TextTheme textTheme) {
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: colors.outline),
+      ),
+      child: Center(
+        child: Text(
+          "No activity yet. Your first study session will light up this chart.",
+          style: textTheme.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
   Widget _tipChip(IconData icon, String text) {
     final colors = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -217,15 +299,15 @@ class _HomeDashboardPageState extends State<HomeDashboardPage> {
     );
   }
 
-  Widget _buildTrendCard(ColorScheme colors, TextTheme textTheme) {
+  Widget _buildTrendCard(ColorScheme colors, TextTheme textTheme, {bool showFrame = true}) {
     final maxVal = _trendData.isEmpty ? 1.0 : _trendData.reduce((a, b) => a > b ? a : b);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: colors.surfaceContainerHigh,
+        color: showFrame ? colors.surfaceContainerHigh : Colors.transparent,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: colors.outline),
+        border: showFrame ? Border.all(color: colors.outline) : null,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,7 +337,7 @@ class _HomeDashboardPageState extends State<HomeDashboardPage> {
           ),
           const SizedBox(height: 6),
           Text(
-            "Tip: keep a steady cadence—short bursts daily beat long gaps.",
+            "Tip: keep a steady cadence — short daily sessions beat long gaps.",
             style: textTheme.bodySmall?.copyWith(color: colors.onSurfaceVariant),
           ),
         ],

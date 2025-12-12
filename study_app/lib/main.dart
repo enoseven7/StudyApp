@@ -58,18 +58,20 @@ class StudyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final headlineFont = GoogleFonts.workSans();
-    final bodyFont = GoogleFonts.inter();
+    // Windows 11-inspired palette: crisp neutrals with a muted accent.
+    final headlineFont =
+        GoogleFonts.workSans().copyWith(fontFamilyFallback: const ['Segoe UI Variable', 'Segoe UI']);
+    final bodyFont =
+        GoogleFonts.inter().copyWith(fontFamilyFallback: const ['Segoe UI Variable', 'Segoe UI']);
 
-    // Sleek, VSCode/Notion-inspired palette: cool neutrals with a single accent.
-    const surface = Color(0xFF0F1116);
-    const panel = Color(0xFF141820);
-    const accent = Color(0xFF5CC8FF);
+    const surface = Color(0xFF0E1116);
+    const panel = Color(0xFF12161C);
+    const accent = Color(0xFF4B8BFE);
     final baseColorScheme = ColorScheme(
       brightness: Brightness.dark,
       primary: accent,
       onPrimary: Colors.black,
-      secondary: const Color(0xFF8BA1B6),
+      secondary: const Color(0xFF94A3B8),
       onSecondary: Colors.black,
       error: const Color(0xFFF97066),
       onError: Colors.black,
@@ -90,16 +92,16 @@ class StudyApp extends StatelessWidget {
       secondaryContainer: panel,
       onSecondaryContainer: const Color(0xFFE2E8F0),
       surfaceContainerHighest: panel,
-      surfaceContainerHigh: panel,
+      surfaceContainerHigh: const Color(0xFF161B22),
       surfaceContainer: panel,
       surfaceContainerLow: surface,
       surfaceContainerLowest: surface,
-      surfaceBright: const Color(0xFF181C23),
+      surfaceBright: const Color(0xFF171C23),
       surfaceDim: surface,
     );
 
     return MaterialApp(
-      title: 'Study App',
+      title: 'Chiaru',
       localizationsDelegates: const [
         // AppLocalizations.delegate,
         FlutterQuillLocalizations.delegate,
@@ -116,11 +118,12 @@ class StudyApp extends StatelessWidget {
         scaffoldBackgroundColor: baseColorScheme.surface,
         colorScheme: baseColorScheme,
         cardColor: baseColorScheme.surfaceContainerHigh,
-        visualDensity: VisualDensity.standard,
+        visualDensity: VisualDensity.comfortable,
+        dividerColor: baseColorScheme.outline.withOpacity(0.6),
         appBarTheme: AppBarTheme(
           backgroundColor: baseColorScheme.surface,
           foregroundColor: baseColorScheme.onSurface,
-          elevation: 0,
+          elevation: 2,
           scrolledUnderElevation: 0,
           centerTitle: false,
           titleTextStyle: headlineFont.copyWith(
@@ -132,10 +135,10 @@ class StudyApp extends StatelessWidget {
         ),
         textTheme: TextTheme(
           titleLarge: headlineFont.copyWith(
-            fontSize: 26,
+            fontSize: 24,
             fontWeight: FontWeight.w600,
             color: baseColorScheme.onSurface,
-            letterSpacing: -0.2,
+            letterSpacing: -0.15,
           ),
           titleMedium: headlineFont.copyWith(
             fontSize: 18,
@@ -166,36 +169,35 @@ class StudyApp extends StatelessWidget {
           selectedColor: baseColorScheme.primary,
           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
         ),
-        dividerColor: baseColorScheme.outline,
         splashFactory: NoSplash.splashFactory,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         cardTheme: CardThemeData(
-          elevation: 0,
+          elevation: 1,
           margin: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: baseColorScheme.surfaceContainerLow,
+          fillColor: baseColorScheme.surfaceContainer,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4),
-            borderSide: BorderSide(color: baseColorScheme.outline),
+            borderRadius: BorderRadius.circular(6),
+            borderSide: BorderSide(color: baseColorScheme.outline.withOpacity(0.4)),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4),
-            borderSide: BorderSide(color: baseColorScheme.outline),
+            borderRadius: BorderRadius.circular(6),
+            borderSide: BorderSide(color: baseColorScheme.outline.withOpacity(0.4)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4),
-            borderSide: BorderSide(color: baseColorScheme.primary, width: 1.4),
+            borderRadius: BorderRadius.circular(6),
+            borderSide: BorderSide(color: baseColorScheme.primary, width: 1.2),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             backgroundColor: baseColorScheme.primary,
             foregroundColor: Colors.black,
             elevation: 0,
@@ -203,15 +205,15 @@ class StudyApp extends StatelessWidget {
         ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-            side: BorderSide(color: baseColorScheme.outline),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            side: BorderSide(color: baseColorScheme.outline.withOpacity(0.6)),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
           ),
         ),
       ),
@@ -280,12 +282,17 @@ class _MainScreenState extends State<MainScreen> {
     return GestureDetector(
       onTap: () => setState(() => currentSection = section),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
         decoration: BoxDecoration(
           color: selected
-              ? Theme.of(context).colorScheme.primary.withOpacity(0.2)
+              ? Theme.of(context).colorScheme.primary.withOpacity(0.14)
               : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: selected
+                ? Theme.of(context).colorScheme.primary.withOpacity(0.35)
+                : Theme.of(context).colorScheme.outline.withOpacity(0.5),
+          ),
         ),
         child: Text(
           text,

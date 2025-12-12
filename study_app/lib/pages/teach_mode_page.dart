@@ -22,6 +22,9 @@ class _TeachModePageScreenState extends State<TeachModePageScreen> {
   final topicCtrl = TextEditingController();
   final audienceCtrl = TextEditingController(text: "peer");
   final explanationCtrl = TextEditingController();
+  final apiKeyCtrl = TextEditingController();
+  final cloudModelCtrl = TextEditingController(text: "gpt-4o-mini");
+  final cloudEndpointCtrl = TextEditingController();
   String critique = "";
 
   @override
@@ -30,8 +33,24 @@ class _TeachModePageScreenState extends State<TeachModePageScreen> {
     _load();
   }
 
+  @override
+  void dispose() {
+    topicCtrl.dispose();
+    audienceCtrl.dispose();
+    explanationCtrl.dispose();
+    apiKeyCtrl.dispose();
+    cloudModelCtrl.dispose();
+    cloudEndpointCtrl.dispose();
+    super.dispose();
+  }
+
   Future<void> _load() async {
     final s = await teachService.loadSettings();
+    if (s.cloudProvider.isEmpty) s.cloudProvider = 'openai';
+    if (s.cloudModel.isEmpty) s.cloudModel = 'gpt-4o-mini';
+    apiKeyCtrl.text = s.apiKey ?? "";
+    cloudModelCtrl.text = s.cloudModel;
+    cloudEndpointCtrl.text = s.cloudEndpoint;
     // pick first model as default
     final defaultModel = availableLocalModels.first;
     final installed = await teachService.modelManager.isInstalled(defaultModel);
@@ -47,6 +66,9 @@ class _TeachModePageScreenState extends State<TeachModePageScreen> {
   Future<void> _saveSettings() async {
     final s = settings;
     if (s == null) return;
+    s.apiKey = apiKeyCtrl.text.trim();
+    s.cloudModel = cloudModelCtrl.text.trim().isEmpty ? s.cloudModel : cloudModelCtrl.text.trim();
+    s.cloudEndpoint = cloudEndpointCtrl.text.trim();
     await teachService.saveSettings(s);
     setState(() {});
   }
@@ -64,7 +86,21 @@ class _TeachModePageScreenState extends State<TeachModePageScreen> {
     });
     try {
       if (settings!.provider == 'cloud') {
-        critique = "Cloud critique placeholder. Connect your API later.";
+        final key = apiKeyCtrl.text.trim();
+        if (key.isEmpty) {
+          critique = "Please enter an API key.";
+        } else {
+          final model = cloudModelCtrl.text.trim().isEmpty ? settings!.cloudModel : cloudModelCtrl.text.trim();
+          critique = await teachService.critiqueCloud(
+            provider: settings!.cloudProvider,
+            apiKey: key,
+            model: model,
+            endpointOverride: cloudEndpointCtrl.text.trim().isEmpty ? null : cloudEndpointCtrl.text.trim(),
+            topic: topic,
+            explanation: explanation,
+            audience: audience,
+          );
+        }
       } else {
         critique = await teachService.critiqueLocally(
           topic: topic,
@@ -119,7 +155,7 @@ class _TeachModePageScreenState extends State<TeachModePageScreen> {
                   _providerToggle(colors, textTheme),
                   const SizedBox(height: 12),
                   if (settings!.provider == 'local') _localModelPanel(colors, textTheme),
-                  if (settings!.provider == 'cloud') _cloudPlaceholder(colors, textTheme),
+                  if (settings!.provider == 'cloud') _cloudPanel(colors, textTheme),
                 ],
               ),
             ),
@@ -313,6 +349,10 @@ class _TeachModePageScreenState extends State<TeachModePageScreen> {
   }
 
   Widget _cloudPlaceholder(ColorScheme colors, TextTheme textTheme) {
+    return const SizedBox.shrink();
+  }
+
+  Widget _cloudPanel(ColorScheme colors, TextTheme textTheme) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
@@ -324,10 +364,54 @@ class _TeachModePageScreenState extends State<TeachModePageScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Cloud (coming soon)", style: textTheme.titleSmall),
-          const SizedBox(height: 6),
+          Text("Cloud settings", style: textTheme.titleSmall),
+          const SizedBox(height: 8),
+          DropdownButtonFormField<String>(
+            value: settings!.cloudProvider,
+            items: const [
+              DropdownMenuItem(value: 'openai', child: Text("OpenAI-compatible")),
+              DropdownMenuItem(value: 'anthropic', child: Text("Anthropic")),
+            ],
+            onChanged: (val) {
+              if (val == null) return;
+              settings = (settings ?? TeachSettings())..cloudProvider = val;
+              setState(() {});
+            },
+            decoration: const InputDecoration(labelText: "Provider"),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: apiKeyCtrl,
+            decoration: const InputDecoration(
+              labelText: "API key",
+              hintText: "sk-...",
+            ),
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: cloudModelCtrl,
+            decoration: const InputDecoration(
+              labelText: "Model",
+              hintText: "e.g. gpt-4o-mini / claude-3-5-sonnet-20240620",
+            ),
+          ),
+          const SizedBox(height: 10),
+          if (settings!.cloudProvider == 'openai')
+            TextField(
+              controller: cloudEndpointCtrl,
+              decoration: const InputDecoration(
+                labelText: "Custom endpoint (optional)",
+                hintText: "https://your-proxy/v1/chat/completions",
+              ),
+              enableSuggestions: false,
+              autocorrect: false,
+            ),
+          const SizedBox(height: 10),
           Text(
-            "Hook up your API/subscription here later. Currently a placeholder.",
+            "Your key stays on device. We do not collect or store it remotely.",
             style: textTheme.bodySmall?.copyWith(color: colors.onSurfaceVariant),
           ),
         ],

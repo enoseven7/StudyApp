@@ -10,6 +10,15 @@ class TeachSettings {
   /// 'cloud' or 'local'
   String provider = 'local';
 
+  /// Which cloud provider to call (e.g., openai, anthropic).
+  String cloudProvider = 'openai';
+
+  /// Model identifier for the chosen cloud provider.
+  String cloudModel = 'gpt-4o-mini';
+
+  /// Optional custom endpoint for OpenAI-compatible proxies.
+  String cloudEndpoint = '';
+
   /// Selected local model id/name
   String? localModel;
 

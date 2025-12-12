@@ -22,13 +22,28 @@ const TeachSettingsSchema = CollectionSchema(
       name: r'apiKey',
       type: IsarType.string,
     ),
-    r'localModel': PropertySchema(
+    r'cloudEndpoint': PropertySchema(
       id: 1,
+      name: r'cloudEndpoint',
+      type: IsarType.string,
+    ),
+    r'cloudModel': PropertySchema(
+      id: 2,
+      name: r'cloudModel',
+      type: IsarType.string,
+    ),
+    r'cloudProvider': PropertySchema(
+      id: 3,
+      name: r'cloudProvider',
+      type: IsarType.string,
+    ),
+    r'localModel': PropertySchema(
+      id: 4,
       name: r'localModel',
       type: IsarType.string,
     ),
     r'provider': PropertySchema(
-      id: 2,
+      id: 5,
       name: r'provider',
       type: IsarType.string,
     )
@@ -59,6 +74,9 @@ int _teachSettingsEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  bytesCount += 3 + object.cloudEndpoint.length * 3;
+  bytesCount += 3 + object.cloudModel.length * 3;
+  bytesCount += 3 + object.cloudProvider.length * 3;
   {
     final value = object.localModel;
     if (value != null) {
@@ -76,8 +94,11 @@ void _teachSettingsSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.apiKey);
-  writer.writeString(offsets[1], object.localModel);
-  writer.writeString(offsets[2], object.provider);
+  writer.writeString(offsets[1], object.cloudEndpoint);
+  writer.writeString(offsets[2], object.cloudModel);
+  writer.writeString(offsets[3], object.cloudProvider);
+  writer.writeString(offsets[4], object.localModel);
+  writer.writeString(offsets[5], object.provider);
 }
 
 TeachSettings _teachSettingsDeserialize(
@@ -88,9 +109,12 @@ TeachSettings _teachSettingsDeserialize(
 ) {
   final object = TeachSettings();
   object.apiKey = reader.readStringOrNull(offsets[0]);
+  object.cloudEndpoint = reader.readString(offsets[1]);
+  object.cloudModel = reader.readString(offsets[2]);
+  object.cloudProvider = reader.readString(offsets[3]);
   object.id = id;
-  object.localModel = reader.readStringOrNull(offsets[1]);
-  object.provider = reader.readString(offsets[2]);
+  object.localModel = reader.readStringOrNull(offsets[4]);
+  object.provider = reader.readString(offsets[5]);
   return object;
 }
 
@@ -104,8 +128,14 @@ P _teachSettingsDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readString(offset)) as P;
+    case 3:
+      return (reader.readString(offset)) as P;
+    case 4:
+      return (reader.readStringOrNull(offset)) as P;
+    case 5:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -357,6 +387,414 @@ extension TeachSettingsQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'apiKey',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudEndpointEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'cloudEndpoint',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudEndpointGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'cloudEndpoint',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudEndpointLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'cloudEndpoint',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudEndpointBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'cloudEndpoint',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudEndpointStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'cloudEndpoint',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudEndpointEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'cloudEndpoint',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudEndpointContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'cloudEndpoint',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudEndpointMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'cloudEndpoint',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudEndpointIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'cloudEndpoint',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudEndpointIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'cloudEndpoint',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudModelEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'cloudModel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudModelGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'cloudModel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudModelLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'cloudModel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudModelBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'cloudModel',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudModelStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'cloudModel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudModelEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'cloudModel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudModelContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'cloudModel',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudModelMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'cloudModel',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudModelIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'cloudModel',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudModelIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'cloudModel',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudProviderEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'cloudProvider',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudProviderGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'cloudProvider',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudProviderLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'cloudProvider',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudProviderBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'cloudProvider',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudProviderStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'cloudProvider',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudProviderEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'cloudProvider',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudProviderContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'cloudProvider',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudProviderMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'cloudProvider',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudProviderIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'cloudProvider',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterFilterCondition>
+      cloudProviderIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'cloudProvider',
         value: '',
       ));
     });
@@ -727,6 +1165,47 @@ extension TeachSettingsQuerySortBy
     });
   }
 
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy>
+      sortByCloudEndpoint() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudEndpoint', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy>
+      sortByCloudEndpointDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudEndpoint', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy> sortByCloudModel() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudModel', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy>
+      sortByCloudModelDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudModel', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy>
+      sortByCloudProvider() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudProvider', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy>
+      sortByCloudProviderDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudProvider', Sort.desc);
+    });
+  }
+
   QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy> sortByLocalModel() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'localModel', Sort.asc);
@@ -765,6 +1244,47 @@ extension TeachSettingsQuerySortThenBy
   QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy> thenByApiKeyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'apiKey', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy>
+      thenByCloudEndpoint() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudEndpoint', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy>
+      thenByCloudEndpointDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudEndpoint', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy> thenByCloudModel() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudModel', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy>
+      thenByCloudModelDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudModel', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy>
+      thenByCloudProvider() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudProvider', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QAfterSortBy>
+      thenByCloudProviderDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cloudProvider', Sort.desc);
     });
   }
 
@@ -816,6 +1336,29 @@ extension TeachSettingsQueryWhereDistinct
     });
   }
 
+  QueryBuilder<TeachSettings, TeachSettings, QDistinct> distinctByCloudEndpoint(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'cloudEndpoint',
+          caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QDistinct> distinctByCloudModel(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'cloudModel', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<TeachSettings, TeachSettings, QDistinct> distinctByCloudProvider(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'cloudProvider',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<TeachSettings, TeachSettings, QDistinct> distinctByLocalModel(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -842,6 +1385,26 @@ extension TeachSettingsQueryProperty
   QueryBuilder<TeachSettings, String?, QQueryOperations> apiKeyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'apiKey');
+    });
+  }
+
+  QueryBuilder<TeachSettings, String, QQueryOperations>
+      cloudEndpointProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'cloudEndpoint');
+    });
+  }
+
+  QueryBuilder<TeachSettings, String, QQueryOperations> cloudModelProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'cloudModel');
+    });
+  }
+
+  QueryBuilder<TeachSettings, String, QQueryOperations>
+      cloudProviderProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'cloudProvider');
     });
   }
 
