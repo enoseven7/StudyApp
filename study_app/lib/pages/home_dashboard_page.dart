@@ -10,7 +10,9 @@ import '../models/subject.dart';
 import '../models/topic.dart';
 
 class HomeDashboardPage extends StatefulWidget {
-  const HomeDashboardPage({super.key});
+  const HomeDashboardPage({super.key, required this.onNavigate});
+
+  final ValueChanged<AppSection> onNavigate;
 
   @override
   State<HomeDashboardPage> createState() => _HomeDashboardPageState();
@@ -229,10 +231,26 @@ class _HomeDashboardPageState extends State<HomeDashboardPage> {
             spacing: 8,
             runSpacing: 8,
             children: [
-              _quickAction(Icons.add_chart_outlined, "New quiz"),
-              _quickAction(Icons.note_add_outlined, "New note"),
-              _quickAction(Icons.library_add_outlined, "New deck"),
-              _quickAction(Icons.bookmark_add_outlined, "New subject"),
+              _quickAction(
+                Icons.add_chart_outlined,
+                "New quiz",
+                onTap: () => widget.onNavigate(AppSection.quizzes),
+              ),
+              _quickAction(
+                Icons.note_add_outlined,
+                "New note",
+                onTap: () => widget.onNavigate(AppSection.notes),
+              ),
+              _quickAction(
+                Icons.library_add_outlined,
+                "New deck",
+                onTap: () => widget.onNavigate(AppSection.flashcards),
+              ),
+              _quickAction(
+                Icons.bookmark_add_outlined,
+                "New subject",
+                onTap: () => widget.onNavigate(AppSection.notes),
+              ),
             ],
           ),
         ],
@@ -240,23 +258,27 @@ class _HomeDashboardPageState extends State<HomeDashboardPage> {
     );
   }
 
-  Widget _quickAction(IconData icon, String label) {
+  Widget _quickAction(IconData icon, String label, {VoidCallback? onTap}) {
     final colors = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        color: colors.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: colors.outline),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 18, color: colors.primary),
-          const SizedBox(width: 8),
-          Text(label, style: textTheme.bodyMedium),
-        ],
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          color: colors.surfaceContainerHigh,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: colors.outline),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 18, color: colors.primary),
+            const SizedBox(width: 8),
+            Text(label, style: textTheme.bodyMedium),
+          ],
+        ),
       ),
     );
   }
